@@ -1,0 +1,88 @@
+<div class="admin-container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-mountain"></i>
+            <h2>Panel Admin</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li class="active"><a href="javascript:void(0)"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li><a href="javascript:void(0)" (click)="logout()"><i class="fas fa-sign-out-alt"></i><span>Cerrar Sesión</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Bienvenido, {{ currentUser?.firstName }}</h1>
+            <div class="user-info">
+                <span>Administrador</span>
+            </div>
+        </div>
+
+        <div class="website-preview-section">
+            <div class="section-header">
+                <div class="section-title">Vista Previa del Sitio</div>
+            </div>
+            <div class="preview-container">
+                <iframe src="/" class="website-preview" id="site-preview" frameborder="0" style="width:100%; height:500px;"></iframe>
+            </div>
+        </div>
+
+        <div class="config-section" id="colors-section">
+            <div class="section-header">
+                <div class="section-title">Personalizar Colores</div>
+            </div>
+
+            <div class="colors-grid">
+                <div class="color-item">
+                    <div class="color-preview" [style.backgroundColor]="colors.primary"></div>
+                    <div class="color-info">
+                        <h4>Color Primario</h4>
+                        <div class="color-input-group">
+                            <input type="color" [(ngModel)]="colors.primary">
+                            <input type="text" [(ngModel)]="colors.primary">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-item">
+                    <div class="color-preview" [style.backgroundColor]="colors.secondary"></div>
+                    <div class="color-info">
+                        <h4>Color Secundario</h4>
+                        <div class="color-input-group">
+                            <input type="color" [(ngModel)]="colors.secondary">
+                            <input type="text" [(ngModel)]="colors.secondary">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-item">
+                    <div class="color-preview" [style.backgroundColor]="colors.accent"></div>
+                    <div class="color-info">
+                        <h4>Color Acento (Oscuro)</h4>
+                        <div class="color-input-group">
+                            <input type="color" [(ngModel)]="colors.accent">
+                            <input type="text" [(ngModel)]="colors.accent">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-item">
+                    <div class="color-preview" [style.backgroundColor]="colors.neutral" style="border:1px solid #ccc"></div>
+                    <div class="color-info">
+                        <h4>Color Neutro (Fondos)</h4>
+                        <div class="color-input-group">
+                            <input type="color" [(ngModel)]="colors.neutral">
+                            <input type="text" [(ngModel)]="colors.neutral">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-primary" (click)="saveChanges()">Aplicar y Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>

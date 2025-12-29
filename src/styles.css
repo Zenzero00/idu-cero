@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+/* Importamos los estilos de Mexant desde la carpeta assets */
+@import "assets/css/fontawesome.css";
+@import "assets/css/templatemo-574-mexant.css";
+@import "assets/css/owl.css";
+@import "assets/css/animate.css";
+@import "assets/vendor/bootstrap/css/bootstrap.min.css";
+
+/* Estilos base */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
