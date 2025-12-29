@@ -1,3 +1,44 @@
+/* =========================================
+   PROTECCIÓN DE ESTILOS DEL ADMIN
+   ========================================= */
+:host {
+  display: block;
+  /* Restaurar fuente básica para evitar conflictos con la de Mexant */
+  font-family: 'Open Sans', Arial, sans-serif;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+  color: #333;
+}
+
+/* Forzar el modelo de caja correcto */
+.admin-container * {
+  box-sizing: border-box;
+}
+
+/* Resetear estilos de listas que Bootstrap rompe */
+.sidebar ul {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+/* Quitar el subrayado azul de los enlaces que pone Bootstrap */
+.sidebar a, .sidebar a:hover {
+  text-decoration: none !important;
+}
+
+/* Ajustar el iframe para que no se vea doble borde */
+iframe.website-preview {
+  border: 1px solid #e1e1e1;
+  background: white;
+  display: block;
+}
+
+/* =========================================
+   AQUÍ EMPIEZA TU CSS ORIGINAL DE ADMIN.CSS
+   ========================================= */
+/* (Aquí abajo debería estar todo el código que ya tenías...) */
+
 :root {
     --primary-color: #1B73E8;
     --secondary-color: #34A853;

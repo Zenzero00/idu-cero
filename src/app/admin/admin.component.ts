@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DbService, AppColors } from '../services/db.service';
+import { DbService, AppColors } from '../service/db.service';
 
 @Component({
   selector: 'app-admin',
