@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface User {
   firstName: string;
@@ -22,12 +23,30 @@ export class DbService {
   private USER_KEY = 'app_users';
   private COLOR_KEY = 'app_colors';
   private SESSION_KEY = 'app_current_user';
+  private isBrowser: boolean;
 
-  // Signal para actualizar colores en tiempo real
-  currentColors = signal<AppColors>(this.getColors());
+  // Signal inicializada con valores por defecto para evitar errores en SSR
+  currentColors = signal<AppColors>({
+    primary: '#43ba7f',
+    secondary: '#ff511a',
+    accent: '#212741',
+    neutral: '#ffffff'
+  });
 
-  constructor() {
-    // 1. Crear usuario Admin por defecto si no existe
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+
+    if (this.isBrowser) {
+      // Solo ejecutamos lógica de LocalStorage si estamos en el navegador
+      this.initAdmin();
+      const savedColors = this.getColors();
+      this.currentColors.set(savedColors);
+      this.applyColorsToRoot(savedColors);
+    }
+  }
+
+  private initAdmin() {
+    if (!this.isBrowser) return;
     const users = this.getUsers();
     if (!users.some(u => u.role === 'admin')) {
       this.register({
@@ -39,20 +58,19 @@ export class DbService {
       });
       console.log('Usuario Admin creado: admin@test.com / 123');
     }
-
-    // 2. Aplicar colores guardados al iniciar la app
-    this.applyColorsToRoot(this.currentColors());
   }
 
   // --- GESTIÓN DE USUARIOS ---
   getUsers(): User[] {
+    if (!this.isBrowser) return [];
     const data = localStorage.getItem(this.USER_KEY);
     return data ? JSON.parse(data) : [];
   }
 
   register(user: User): boolean {
+    if (!this.isBrowser) return false;
     const users = this.getUsers();
-    if (users.some(u => u.email === user.email)) return false; // El correo ya existe
+    if (users.some(u => u.email === user.email)) return false; 
     
     users.push(user);
     localStorage.setItem(this.USER_KEY, JSON.stringify(users));
@@ -60,6 +78,7 @@ export class DbService {
   }
 
   login(email: string, pass: string): User | null {
+    if (!this.isBrowser) return null;
     const users = this.getUsers();
     const found = users.find(u => u.email === email && u.password === pass);
     if (found) {
@@ -70,32 +89,41 @@ export class DbService {
   }
 
   logout() {
-    localStorage.removeItem(this.SESSION_KEY);
+    if (this.isBrowser) {
+      localStorage.removeItem(this.SESSION_KEY);
+    }
   }
 
   getCurrentUser(): User | null {
+    if (!this.isBrowser) return null;
     const u = localStorage.getItem(this.SESSION_KEY);
     return u ? JSON.parse(u) : null;
   }
 
   // --- GESTIÓN DE COLORES ---
   getColors(): AppColors {
+    if (!this.isBrowser) {
+      return { primary: '#43ba7f', secondary: '#ff511a', accent: '#212741', neutral: '#ffffff' };
+    }
     const data = localStorage.getItem(this.COLOR_KEY);
     return data ? JSON.parse(data) : {
-      primary: '#43ba7f',   // Verde Mexant
-      secondary: '#ff511a', // Naranja Mexant
-      accent: '#212741',    // Azul Oscuro
-      neutral: '#ffffff'    // Blanco
+      primary: '#43ba7f',
+      secondary: '#ff511a',
+      accent: '#212741',
+      neutral: '#ffffff'
     };
   }
 
   saveColors(colors: AppColors) {
-    localStorage.setItem(this.COLOR_KEY, JSON.stringify(colors));
-    this.currentColors.set(colors);
-    this.applyColorsToRoot(colors);
+    if (this.isBrowser) {
+      localStorage.setItem(this.COLOR_KEY, JSON.stringify(colors));
+      this.currentColors.set(colors);
+      this.applyColorsToRoot(colors);
+    }
   }
 
   private applyColorsToRoot(c: AppColors) {
+    if (!this.isBrowser) return;
     const root = document.documentElement;
     root.style.setProperty('--primary-color', c.primary);
     root.style.setProperty('--secondary-color', c.secondary);

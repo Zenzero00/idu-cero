@@ -22,10 +22,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "scripts": [
+              "src/assets/vendor/jquery/jquery.min.js",
+              "src/assets/vendor/bootstrap/js/bootstrap.min.js",
+              "src/assets/js/isotope.min.js",
+              "src/assets/js/owl-carousel.js",
+              "src/assets/js/tabs.js",
+              "src/assets/js/swiper.js",
+              "src/assets/js/custom.js"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -84,11 +95,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "scripts": []
           }
         }
       }
